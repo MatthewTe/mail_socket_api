@@ -1,17 +1,17 @@
 # SMTP/IMAP mail "socket" API
 This is the repository for the mail socket api. It wraps logic around the SMTP and IMAP Client objects that allows a web server (primarily gmail) to serve as a means of data transfer for small, easily base64 encoded data. The purpose of this package is to allow data transfer from a device running special modelling software onto another deice that performs the web hosting services for the data pipeline output.
 
-This package was written as part of the [CDL dfs datapipeline project](placeholder).
+This package was written as part of the [CDL dfs datapipeline project](https://github.com/users/MatthewTe/projects/2).
 
 ## Table of Contents
-* #### [Use of Mail "Socket" API](placeholder)
-* #### [Documentation](placeholder)
-  * ##### [smtp_socket](placeholder)
-  * ##### [imap_socket](placeholder)
+* #### [Use of Mail "Socket" API](https://github.com/MatthewTe/mail_socket_api#use-of-mail-socket-api-1)
+* #### [Documentation](https://github.com/MatthewTe/mail_socket_api#documentation-1)
+  * ##### [smtp_socket](https://github.com/MatthewTe/mail_socket_api#smtp_socketself-smtp_server-port-mail_address-psswrd-debugtrue)
+  * ##### [imap_socket](https://github.com/MatthewTe/mail_socket_api#imap_socketself-imap_server-mail_address-psswrd-debugtrue)
 
 ## Use of Mail "Socket" API
 As described above the purpose of these mail 'sockets' are to wrap logic around the SMTP and IMAP Client objects that allows a web server to serve as a means of data transfer for small, easily accessible base64 encoded data. The function that this api serves in the data pipeline is highlighted by the diagram below:
-![IMAGE NOT FOUND](placeholder)
+![IMAGE NOT FOUND](https://github.com/MatthewTe/mail_socket_api/blob/master/resources/Mail%20Socket%20API.png)
 
 ## Documentation
 The two main socket objects for the package are contained in the `mail_transfer_api.py`. The two 'socket' objects are:
