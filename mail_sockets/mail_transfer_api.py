@@ -285,14 +285,14 @@ class imap_socket(imapclient.IMAPClient):
 
         # Sorting date list to find the most recent datetime object:
         most_recent = max(datetime_lst)
+        self.debug_print(f'[MOST RECENT EMAIL DATE FOR {client_name}]: {most_recent}')
+
 
         # Extracting the corresponding uid for the most recent client email:
         recent_uid = header_datetime_dict[most_recent]
 
         # Initalizing a message as a pyzmail object:
         pyz_msg = pyzmail.PyzMessage.factory(messages[recent_uid][b'BODY[]'])
-
-        #print(pyz_msg.get_subject())
 
         # Iterating through the list of pyzmail mailparts to extract the base64 payload:
         for mailpart in pyz_msg.mailparts:
@@ -335,11 +335,3 @@ class imap_socket(imapclient.IMAPClient):
         '''
         if self.debug == True:
             print(message)
-
-
-
-# testing
-# testimap = imap_socket('imap.gmail.com', 'cdlsmtptest@gmail.com', 'coastaldynamics')
-# testimap.get_forecast_data('TT_SW_Ruby')
-# testsmtp = smtp_socket('smtp.gmail.com', 587, 'cdlsmtptest@gmail.com', 'coastaldynamics')
-# test.send_forecast_data('/home/matthew/Downloads/TT_SW_Ruby_concat.csv', 'TT_SW_Ruby')
