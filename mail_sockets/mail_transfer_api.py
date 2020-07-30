@@ -403,7 +403,3 @@ class imap_socket(imapclient.IMAPClient):
         '''
         if self.debug == True:
             print(message)
-
-
-test = imap_socket('imap.gmail.com', 'cdlsmtptest@gmail.com','coastaldynamics')
-test.clear_forecast_data('TT_SW_Ruby')
