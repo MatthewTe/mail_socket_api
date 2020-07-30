@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mail_data_transfer_api",
-    version="0.1.0",
+    version="0.1.1",
     author="MatthewTe",
     description="An API that facilitates small data transfers through SMTP and IMAP mail servers.",
     long_description=long_description,
