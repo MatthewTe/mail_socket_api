@@ -49,7 +49,7 @@ This is the sister method to the `smtp_socket.send_forecast_data()`. It accesses
 
 The `get_forecast_data()` method extracts the csv data attached to the relevant email as a base64 encoded data binary. This binary is decoded into a formatted string and then converted and formatted into the dataframe. The logic of extracting seven day forecast data is as follows:
 
-The `header` component of the email (that is built and sent by the `smtp_socket.send_forecast_data()`) is key in parsing emails. The header component (The Email Subject) is the first element of email to be parsed and is always in the format: `"{client_name};{file_name};forecast;{datetime_sent}"`. The `get_forecast_data()` method parses this string and ensures that only the attachments from the email with matching `client_name` Parameters and most recent `datetime_sent` will be extracted. 
+The `header` component of the email (that is built and sent by the `smtp_socket.send_forecast_data()`) is key in parsing emails. The header component (The Email Subject) is the first element of email to be parsed and is always in the format: `"{client_name};{file_name};forecast;{datetime_sent}"`. The `get_forecast_data()` method parses this string and ensures that only the attachments from the email with matching `client_name` Parameters and most recent `datetime_sent` will be extracted.
 
 ```python
 imap_socket.get_forecast_data():
@@ -105,3 +105,11 @@ for mailpart in pyz_msg.mailparts:
 
 return payload_df
 ```    
+
+#### `clear_forecast_data(self, client_name)`
+When called this method PERMANENTLY DELETES ALL of the current emails on the mail server with the client name that matches the input parameter `client_name` EXCEPT for the MOST RECENTLY SENT email. I.E: After this method runs there is one email left on the server with the corresponding `client_name`, and it is the most recently sent client_name email.
+
+This is a method for long term maintenance of the IMAP server. It parses all current message headers in the email server for the UIDs of messages associated with the input parameter `client_name`.
+
+These messages are sorted by the datetime values associated with the mail header and a list is built of all the UID values of every datetime object EXCEPT the most recent datetime value. This list of UIDs are then used to permanently delete emails from the email server via the use of the `imap_socket's` parent object's (`IMAPClient`) methods:
+`.IMAPClient.delete_messages()` and `IMAPClient.expunge()`.

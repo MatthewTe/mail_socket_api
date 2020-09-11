@@ -87,7 +87,7 @@ class smtp_socket(smtplib.SMTP):
 
             self.debug_print(f'[LOGIN TO ACCOUNT {mail_address} SUCESSFULL]')
 
-# <------------------------Pipeline Specific Sending Methods------------------->
+# <-----------dfs0 7-Day Forecast Pipeline Specific Sending Methods------------>
 
     # Method designed to send csv data generated from the seven day dfs0_pipeline:
     def send_forecast_data(self, data_path, client_name):
@@ -319,6 +319,74 @@ class imap_socket(imapclient.IMAPClient):
         self.debug_print(f'[DATA RETRIEVAL SUCESSFULL:] Closing connection to {self.mail_address}')
 
         return payload_df
+
+    # Method that clears the SMTP server of all emails with client_name except most recent:
+    def clear_forecast_data(self, client_name):
+        '''
+        This method is intended for maintenance of the IMAP email server. It
+        queries the IMAP server for any emails with the input client name. It then
+        iterates over all of said emails, permanently deleting all client_name
+        messages EXCEPT for the most recent.
+
+        Parameters
+        ----------
+        client_name : str
+            A string representing the name of the client. This client_name must be
+            concsitent with all other instances of the client in the pipeline as
+            it must match the client_name parameter embeded in the message header.
+        '''
+        self.debug_print(f"[PERFORMING MAIL DELETION FOR CLIENT:] {client_name}")
+
+        # Extracting the contents of the inbox folder of the IMAP server:
+        self.select_folder('INBOX', readonly=False)
+
+        # Searching for message where the subject contains the client name:
+        uid_lst = self.search(['SUBJECT', f'{client_name}'])
+
+        # Creating list of mail messages and contents from uid_lst:
+        messages = self.fetch(uid_lst, data= ['BODY[]', 'FLAGS'])
+
+        # Declaring dict to be populated with key value pair: {date_val:uid}:
+        date_val_dict = {}
+
+        # Iterating over the list of messages to extract mail headers:
+        for uid in messages:
+
+            # Initalizing the message as a pyzmail object to extract header:
+            header = pyzmail.PyzMessage.factory(messages[uid][b'BODY[]']).get_subject()
+
+            # Processing the header for list information:
+            header_lst = header.split(';')
+
+            # Adding conditional to ensure only client specific emails are parse:
+            if header_lst[0] == client_name:
+
+                # Adding key-value pair to dict:
+                date_val_dict[datetime.datetime.strptime(header_lst[-1],
+                '%d/%m/%Y %H:%M')] = uid
+
+        # Creating a sorted list of datetime objects from date_val_dict and
+        # selecting the last value (most recent email data):
+        most_recent_date = sorted(list(date_val_dict.keys()))[-1]
+
+        # Removing the key/value pair of the most recent email from date_val_dict:
+        del date_val_dict[most_recent_date]
+
+        uids_to_be_removed = list(date_val_dict.values())
+
+        self.debug_print(f"[MESSAGES TO BE DELETED BY UIDs:] {uids_to_be_removed}")
+
+        # Marking all messages with the date_val_dict UIDs for deletion:
+        self.delete_messages(uids_to_be_removed)
+
+        # Permanently removing all previous emails:
+        self.expunge()
+        self.debug_print(f"[PREVIOUS MESSAGES FOR {client_name} DELETED]")
+
+        self.logout()
+        self.debug_print(f'[DELETION PROCESS SUCESSFULL:] Closing connection to {self.mail_address}')
+
+
 
 # <-------------------------------"Helper" Functions-------------------------->
 
