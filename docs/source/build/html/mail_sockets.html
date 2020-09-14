@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mail_sockets package &mdash; Mail Socket API 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Mail Socket API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">mail_sockets package</a><ul>
+<li><a class="reference internal" href="#module-mail_sockets.mail_transfer_api">mail_sockets.mail_transfer_api module</a></li>
+<li><a class="reference internal" href="#module-mail_sockets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mail Socket API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>mail_sockets package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/mail_sockets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mail-sockets-package">
+<h1>mail_sockets package<a class="headerlink" href="#mail-sockets-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mail_sockets.mail_transfer_api">
+<span id="mail-sockets-mail-transfer-api-module"></span><h2>mail_sockets.mail_transfer_api module<a class="headerlink" href="#module-mail_sockets.mail_transfer_api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mail_sockets.mail_transfer_api.imap_socket">
+<em class="property">class </em><code class="descclassname">mail_sockets.mail_transfer_api.</code><code class="descname">imap_socket</code><span class="sig-paren">(</span><em>imap_server</em>, <em>mail_address</em>, <em>psswrd</em>, <em>debug=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.imap_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">imapclient.imapclient.IMAPClient</span></code></p>
+<p>This is a commuincation object that is used to extract data from a mail server
+in a form that allows it to be used as a data api.</p>
+<p>The object is intended to serve as the ‘sister’ method to the smtp_socket()
+object in that it provides an api for structured data retrieval from an IMAP
+email server. See Documentation for more information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>imap_server</strong> (<em>str</em>) – A string that represents the domain name of the IMAP server. This will
+be used to initalize the IMAPClient object. eg: ‘imap.gmail.com’.</li>
+<li><strong>mail_address</strong> (<em>str</em>) – This is the string representing the email address that the method will
+connect to and upload messages to eg: <a class="reference external" href="mailto:account&#37;&#52;&#48;gmail&#46;com">account<span>&#64;</span>gmail<span>&#46;</span>com</a>.</li>
+<li><strong>psswrd</strong> (<em>str</em>) – The password that will be used to sign into the IMAP server.</li>
+<li><strong>debug</strong> (<em>bool</em>) – A boolean dictating whether the debug messages for the object print. By
+default it is set to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mail_sockets.mail_transfer_api.imap_socket.clear_forecast_data">
+<code class="descname">clear_forecast_data</code><span class="sig-paren">(</span><em>client_name</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.imap_socket.clear_forecast_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is intended for maintenance of the IMAP email server. It
+queries the IMAP server for any emails with the input client name. It then
+iterates over all of said emails, permanently deleting all client_name
+messages EXCEPT for the most recent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client_name</strong> (<em>str</em>) – A string representing the name of the client. This client_name must be
+concsitent with all other instances of the client in the pipeline as
+it must match the client_name parameter embeded in the message header.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mail_sockets.mail_transfer_api.imap_socket.debug_print">
+<code class="descname">debug_print</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.imap_socket.debug_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debug mehod that allows printing of debug messages if debug=True in
+initalization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>str</em>) – The string to be printed if debug=True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mail_sockets.mail_transfer_api.imap_socket.get_forecast_data">
+<code class="descname">get_forecast_data</code><span class="sig-paren">(</span><em>client_name</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.imap_socket.get_forecast_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is intended to be used to extract client specific data from the
+IMAP mail server that was uploaded (by the SMTP socket) from the seven
+day forecast model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client_name</strong> (<em>str</em>) – A string representing the name of the client for which the most recent
+data is to be recieved. This client name must be concsitent with all
+other uses of the client name in the pipeline.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>payload_df</strong> – A pandas dataframe containing all the forecasting timeseries data
+extracted from the csv pulled from the IMAP server.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pandas dataframe</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mail_sockets.mail_transfer_api.smtp_socket">
+<em class="property">class </em><code class="descclassname">mail_sockets.mail_transfer_api.</code><code class="descname">smtp_socket</code><span class="sig-paren">(</span><em>smtp_server</em>, <em>port</em>, <em>mail_address</em>, <em>psswrd</em>, <em>debug=True</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.smtp_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">smtplib.SMTP</span></code></p>
+<p>This is a commuincation object that makes use of the SMTP python package to
+send pipeline relevant information to a SMTP server account.</p>
+<p>This method is meant to operate similarly to the api that allows data to be
+sent through a network socket. It is essetally an object that wraps the
+smtp.SMTP object and allows relevant pipeline data to be uploaded. It is then
+under the assumption that this data is read from the SMTP server via the twin
+object imap_socket().</p>
+<p>See documentation as to why this bootstrap method of making use of email severs
+was used to transfer data as opposed to traditional network sockets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>smtp_server</strong> (<em>str</em>) – A string that represents the domain name of the SMTP server. This will
+be used to initalize the smtplib.SMTP object. eg: ‘stmp.gmail.com’.</li>
+<li><strong>port</strong> (<em>int</em>) – An integer representing the port number used to connect to the SMTP server.</li>
+<li><strong>mail_address</strong> (<em>str</em>) – This is the string representing the email address that the method will
+connect to and upload messages to.</li>
+<li><strong>psswrd</strong> (<em>str</em>) – The password that will be used to sign into the SMTP server.</li>
+<li><strong>debug</strong> (<em>bool</em>) – A boolean dictating whether the debug messages for the object print. By
+default it is set to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mail_sockets.mail_transfer_api.smtp_socket.debug_print">
+<code class="descname">debug_print</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.smtp_socket.debug_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debug mehod that allows printing of debug messages if debug=True in
+initalization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>str</em>) – The string to be printed if debug=True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mail_sockets.mail_transfer_api.smtp_socket.send_forecast_data">
+<code class="descname">send_forecast_data</code><span class="sig-paren">(</span><em>data_path</em>, <em>client_name</em><span class="sig-paren">)</span><a class="headerlink" href="#mail_sockets.mail_transfer_api.smtp_socket.send_forecast_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that sends an email with a csv attachment to the SMTP server. It
+is designed to send a message with the correct formatting to be read by
+the IMAP socket as data generated from the seven day forecast model.</p>
+<p>It is assumed that the data parameter is a .csv file of concatinated
+seven day forecast data generated by the HD model. If it is not many of
+the tagging and formatting processes may not function. See Documentation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data_path</strong> (<em>str</em>) – A string representing the path to the .csv file that is to be attached
+to the message.</li>
+<li><strong>client_name</strong> (<em>str</em>) – This is the string that represents the name of the client for which
+the forecast data was generated for. It must be the same as the client
+names used in the data pipeline api.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mail_sockets">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mail_sockets" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Matthew Teelucksingh
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

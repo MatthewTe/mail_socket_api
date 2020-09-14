@@ -1,0 +1,17 @@
+Data File System Mail Socket API's documentation
+================================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+   :titlesonly:
+
+   mail_sockets
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

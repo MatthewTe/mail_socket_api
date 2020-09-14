@@ -55,6 +55,7 @@ class smtp_socket(smtplib.SMTP):
     debug : bool
         A boolean dictating whether the debug messages for the object print. By
         default it is set to True.
+
     """
     def __init__(self, smtp_server, port, mail_address, psswrd, debug=True):
 
@@ -90,7 +91,7 @@ class smtp_socket(smtplib.SMTP):
 # <-----------dfs0 7-Day Forecast Pipeline Specific Sending Methods------------>
 
     # Method designed to send csv data generated from the seven day dfs0_pipeline:
-    def send_forecast_data(self, data_path, client_name):
+    def send_forecast_data(self, data_path, file_name):
         '''
         Method that sends an email with a csv attachment to the SMTP server. It
         is designed to send a message with the correct formatting to be read by
@@ -106,10 +107,10 @@ class smtp_socket(smtplib.SMTP):
             A string representing the path to the .csv file that is to be attached
             to the message.
 
-        client_name : str
-            This is the string that represents the name of the client for which
-            the forecast data was generated for. It must be the same as the client
-            names used in the data pipeline api.
+        file_name : str
+            This is the string that represents the path to the file that will be
+            encoded and sent to the mail server.
+
         '''
         # Accessing the .csv using the data path string:
         csv_path = os.path.abspath(data_path)
@@ -119,8 +120,8 @@ class smtp_socket(smtplib.SMTP):
         datetime_sent = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
 
         # Creating Subject String for Email, used for IMAP type verification:
-        # "client_name;file_name;model_type;datetime_sent"
-        subject = f"{client_name};{file_name};forecast;{datetime_sent}"
+        # "file_name;file_name;model_type;datetime_sent"
+        subject = f"{file_name};{file_name};forecast;{datetime_sent}"
 
         # Creating the multipart email message:
         csv_message = MIMEMultipart()
@@ -168,13 +169,16 @@ class smtp_socket(smtplib.SMTP):
         Debug mehod that allows printing of debug messages if debug=True in
         initalization.
 
-        Parameter
+        Parameters
         ---------
         message: str
             The string to be printed if debug=True.
+
         '''
         if self.debug == True:
             print(message)
+
+
 
 # Connection object for extracting data from the IMAP mail server:
 class imap_socket(imapclient.IMAPClient):
@@ -202,6 +206,7 @@ class imap_socket(imapclient.IMAPClient):
     debug : bool
         A boolean dictating whether the debug messages for the object print. By
         default it is set to True.
+
     """
     def __init__(self, imap_server, mail_address, psswrd, debug=True):
 
@@ -228,7 +233,7 @@ class imap_socket(imapclient.IMAPClient):
 # <-------------------------Pipeline Specific Reciever Methods----------------->
 
     # Method that extracts data generated from the seven day forecast dfs0 pipeline:
-    def get_forecast_data(self, client_name):
+    def get_forecast_data(self, file_name):
         '''
         This method is intended to be used to extract client specific data from the
         IMAP mail server that was uploaded (by the SMTP socket) from the seven
@@ -236,22 +241,23 @@ class imap_socket(imapclient.IMAPClient):
 
         Parameters
         ----------
-        client_name : str
-            A string representing the name of the client for which the most recent
-            data is to be recieved. This client name must be concsitent with all
-            other uses of the client name in the pipeline.
+        file_name : str
+            A string representing the name of the file for which the most recent
+            data is to be recieved. This file name must be concsitent with all
+            other uses of the file name in the pipeline.
 
         Returns
         -------
         payload_df : pandas dataframe
             A pandas dataframe containing all the forecasting timeseries data
             extracted from the csv pulled from the IMAP server.
+
         '''
         # Extracting the contents of the inbox folder of the IMAP server:
         self.select_folder('INBOX', readonly=True)
 
         # Searching for message where the subject contains the client name:
-        uid_lst = self.search(['SUBJECT', f'{client_name}'])
+        uid_lst = self.search(['SUBJECT', f'{file_name}'])
 
         # Creating dict of mail messages and contents from uid_lst:
         messages = self.fetch(uid_lst, data= ['BODY[]', 'FLAGS'])
@@ -272,7 +278,7 @@ class imap_socket(imapclient.IMAPClient):
             header_lst = header.split(';')
 
             # Parses the header to ensure that this is the correct message:
-            if header_lst[0] == client_name: # If the email contains client data:
+            if header_lst[0] == file_name: # If the email contains client data:
 
                 date_val = datetime.datetime.strptime(header_lst[-1], '%d/%m/%Y %H:%M')
 
@@ -285,7 +291,7 @@ class imap_socket(imapclient.IMAPClient):
 
         # Sorting date list to find the most recent datetime object:
         most_recent = max(datetime_lst)
-        self.debug_print(f'[MOST RECENT EMAIL DATE FOR {client_name}]: {most_recent}')
+        self.debug_print(f'[MOST RECENT EMAIL DATE FOR {file_name}]: {most_recent}')
 
 
         # Extracting the corresponding uid for the most recent client email:
@@ -320,28 +326,29 @@ class imap_socket(imapclient.IMAPClient):
 
         return payload_df
 
-    # Method that clears the SMTP server of all emails with client_name except most recent:
-    def clear_forecast_data(self, client_name):
+    # Method that clears the SMTP server of all emails with file_name except most recent:
+    def clear_forecast_data(self, file_name):
         '''
         This method is intended for maintenance of the IMAP email server. It
         queries the IMAP server for any emails with the input client name. It then
-        iterates over all of said emails, permanently deleting all client_name
+        iterates over all of said emails, permanently deleting all file_name
         messages EXCEPT for the most recent.
 
         Parameters
         ----------
-        client_name : str
-            A string representing the name of the client. This client_name must be
-            concsitent with all other instances of the client in the pipeline as
-            it must match the client_name parameter embeded in the message header.
+        file_name : str
+            A string representing the name of the file. This file_name must be
+            concsitent with all other instances of the file in the pipeline as
+            it must match the file_name parameter embeded in the message header.
+
         '''
-        self.debug_print(f"[PERFORMING MAIL DELETION FOR CLIENT:] {client_name}")
+        self.debug_print(f"[PERFORMING MAIL DELETION FOR CLIENT:] {file_name}")
 
         # Extracting the contents of the inbox folder of the IMAP server:
         self.select_folder('INBOX', readonly=False)
 
         # Searching for message where the subject contains the client name:
-        uid_lst = self.search(['SUBJECT', f'{client_name}'])
+        uid_lst = self.search(['SUBJECT', f'{file_name}'])
 
         # Creating list of mail messages and contents from uid_lst:
         messages = self.fetch(uid_lst, data= ['BODY[]', 'FLAGS'])
@@ -359,7 +366,7 @@ class imap_socket(imapclient.IMAPClient):
             header_lst = header.split(';')
 
             # Adding conditional to ensure only client specific emails are parse:
-            if header_lst[0] == client_name:
+            if header_lst[0] == file_name:
 
                 # Adding key-value pair to dict:
                 date_val_dict[datetime.datetime.strptime(header_lst[-1],
@@ -381,7 +388,7 @@ class imap_socket(imapclient.IMAPClient):
 
         # Permanently removing all previous emails:
         self.expunge()
-        self.debug_print(f"[PREVIOUS MESSAGES FOR {client_name} DELETED]")
+        self.debug_print(f"[PREVIOUS MESSAGES FOR {file_name} DELETED]")
 
         self.logout()
         self.debug_print(f'[DELETION PROCESS SUCESSFULL:] Closing connection to {self.mail_address}')
@@ -396,10 +403,11 @@ class imap_socket(imapclient.IMAPClient):
         Debug mehod that allows printing of debug messages if debug=True in
         initalization.
 
-        Parameter
+        Parameters
         ---------
         message: str
             The string to be printed if debug=True.
+
         '''
         if self.debug == True:
             print(message)
