@@ -2,7 +2,7 @@ Introduction to the DFS Mail Socket API
 =======================================
 
 Data from the DFS Hydrodynamic (HD) Models is output in custom file formats as well as in a structured file directory.
-The `DFS data pipeline library <placeholder>` provides APIs for building a scheduled pipeline that transforms DFS data into
+The `DFS data pipeline library <https://github.com/MatthewTe/dfs_file_data_pipeline_api>`_ provides APIs for building a scheduled pipeline that transforms DFS data into
 more traditional formats and loads said data into some upstream process such as a web server.
 
 For large quantities of model data other forms of data transfer are used, such as TCP sockets. However, until a web API is built
@@ -22,9 +22,9 @@ The email is sent with a "Subject" used for identification, which is compiled ba
 
 The file_name parameter is used to build the email Subject string that is parsed on the other end by the IMAP data query api. The subject of the
 email is built as follows:
- ::
- 
-  {file_name};{file_name};forecast;{datetime_sent}
+::
+
+ {file_name};{file_name};forecast;{datetime_sent}
 
 This Subject string is what is used on the IMAP end of the Mail API to query data from the mail server.
 

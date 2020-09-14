@@ -155,7 +155,7 @@
   <div class="section" id="introduction-to-the-dfs-mail-socket-api">
 <h1>Introduction to the DFS Mail Socket API<a class="headerlink" href="#introduction-to-the-dfs-mail-socket-api" title="Permalink to this headline">¶</a></h1>
 <p>Data from the DFS Hydrodynamic (HD) Models is output in custom file formats as well as in a structured file directory.
-The <cite>DFS data pipeline library &lt;placeholder&gt;</cite> provides APIs for building a scheduled pipeline that transforms DFS data into
+The <a class="reference external" href="https://github.com/MatthewTe/dfs_file_data_pipeline_api">DFS data pipeline library</a> provides APIs for building a scheduled pipeline that transforms DFS data into
 more traditional formats and loads said data into some upstream process such as a web server.</p>
 <p>For large quantities of model data other forms of data transfer are used, such as TCP sockets. However, until a web API is built
 that allows transformed model data to be pulled from the HD model server a method of reliably transferring small quantities of data.</p>
@@ -169,11 +169,9 @@ to serve as a means of data transfer for small, easily base64 encoded data.</p>
 The email is sent with a “Subject” used for identification, which is compiled based on the users input parameters.</p>
 <p>The file_name parameter is used to build the email Subject string that is parsed on the other end by the IMAP data query api. The subject of the
 email is built as follows:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">file_name</span><span class="p">};{</span><span class="n">file_name</span><span class="p">};</span><span class="n">forecast</span><span class="p">;{</span><span class="n">datetime_sent</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">file_name</span><span class="p">};{</span><span class="n">file_name</span><span class="p">};</span><span class="n">forecast</span><span class="p">;{</span><span class="n">datetime_sent</span><span class="p">}</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>This Subject string is what is used on the IMAP end of the Mail API to query data from the mail server.</p>
 <p>Example of using the SMTP Mail API to send model data:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating an SMTP Socket Object:</span>
